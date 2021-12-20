@@ -26,7 +26,7 @@ block_width = round((width - side_pad) / n)
 block_height = math.floor((height - top_pad) / (max_val - min_val))
 start_x = side_pad // 2 #determines where we start drawing blocks 
 
-font = pygame.font.SysFont('comicsans', 40)
+font = pygame.font.SysFont('comicsans', 30)
 window = pygame.display.set_mode((width, height))
 
 def generate_list(n, min_val, max_val):
@@ -44,7 +44,7 @@ def draw(algo_name, lst):
     controls = font.render("R - Reset List | SPACE - Start Sorting", 1, pinks[0])
     window.blit(controls, (width/2 - controls.get_width()/2 , 45))
 
-    sorting = font.render("I - Insertion Sort | B - Bubble Sort | S - Selection Sort", 1, pinks[0])
+    sorting = font.render("I - Insertion Sort | B - Bubble Sort | S - Selection Sort | Z - Shell Sort", 1, pinks[0])
     window.blit(sorting, (width/2 - sorting.get_width()/2 , 75))
 
     draw_list(lst)
@@ -106,6 +106,21 @@ def selection_sort(lst):
         yield True
     return lst
 
+def shell_sort(lst):
+    gap = math.floor(n/2)
+    while gap > 0:
+        for i in range(gap, n):
+            temp = lst[i]
+            j = i
+            while j >= gap and lst[j-gap] > temp:
+                lst[j] = lst[j-gap]
+                j -= gap
+            lst[j] = temp
+            draw_list(lst, {lst[i]: red, lst[j]: blue}, True)
+            yield True
+        gap = math.floor(gap/2)
+    return lst
+
 def main():
     run = True
 
@@ -150,6 +165,9 @@ def main():
             elif event.key == pygame.K_s:
                 sorting_algo = selection_sort
                 sorting_algo_name = "Selection Sort"
+            elif event.key == pygame.K_z:
+                sorting_algo = shell_sort
+                sorting_algo_name = "Shell Sort"
 
     pygame.quit()
 
