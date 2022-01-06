@@ -101,6 +101,8 @@ def selection_sort(lst):
         for j in range(i+1, len(lst)):
             if lst[min_idx] > lst[j]:
                 min_idx = j
+                draw_list(lst, {min_idx: red, i: blue}, True)
+                yield True
         lst[i], lst[min_idx] = lst[min_idx], lst[i]
         draw_list(lst, {min_idx: red, i: blue}, True)
         yield True
@@ -135,7 +137,7 @@ def main():
     sorting_algo_generator = None #stores the generator object when sorting
 
     while run:
-        clock.tick(60)
+        clock.tick(360)
         if sorting:
             try:
                 next(sorting_algo_generator)
